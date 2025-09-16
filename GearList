@@ -1,0 +1,14 @@
+40;sword;ATK;4
+60;doubleAxe;ATK;6
+30;shield;DEF;3
+40;boots;SPE;4
+70;windShield;DEF;7
+100;waterBlade;ATK;10
+70;windSword;ATK;7
+70;windBoots;SPE;7
+100;waterBoots;SPE;10
+80;fireBoots;SPE;8
+80;fireShield;DEF;8
+80;fireSword;ATK;8
+60;dualBlade;ATK;6
+10;rustyShield;DEF;1
