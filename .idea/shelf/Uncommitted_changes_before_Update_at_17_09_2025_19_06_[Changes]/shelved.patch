@@ -1,0 +1,440 @@
+Index: src/model/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\n\r\npublic class User {\r\n    private final String name;\r\n    private int money = 100;\r\n\r\n    private Hero hero;\r\n    private Gear[] gearList;\r\n\r\n    public User(String name, Hero hero) {\r\n        this.name = name;\r\n        this.hero = hero;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"User{\" +\r\n                \"name='\" + name + '\\'' +\r\n                \", money=\" + money +\r\n                \", hero=\" + hero.getName() +\r\n                '}';\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/model/User.java b/src/model/User.java
+--- a/src/model/User.java	(revision f01d2f362f75258ebddb6f6a13b7e2ebf5d64f60)
++++ b/src/model/User.java	(date 1758127971272)
+@@ -1,12 +1,28 @@
+ package model;
+ 
+ public class User {
+-    private final String name;
++    final String name;
+     private int money = 100;
+ 
+     private Hero hero;
+     private Gear[] gearList;
+ 
++    public String getName() {
++        return name;
++    }
++
++    public int getMoney() {
++        return money;
++    }
++
++    public Hero getHero() {
++        return hero;
++    }
++
++    public Gear[] getGearList() {
++        return gearList;
++    }
++
+     public User(String name, Hero hero) {
+         this.name = name;
+         this.hero = hero;
+Index: src/utils/RandomGen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/utils/RandomGen.java b/src/utils/RandomGen.java
+new file mode 100644
+--- /dev/null	(date 1758126136814)
++++ b/src/utils/RandomGen.java	(date 1758126136814)
+@@ -0,0 +1,11 @@
++package utils;
++
++import java.util.Random;
++
++public class RandomGen {
++    private final static Random generalRandom = new Random();
++
++    public static int getRandomInt(int min, int max){
++        return generalRandom.nextInt(min, max + 1);
++    }
++}
+Index: src/model/Hero.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class Hero {\r\n    private final int atkPerc;\r\n    private final int speedPerc;\r\n    private final int defPerc;\r\n    private final int HP = 100;\r\n    private String name;\r\n    private final int gearSlots = 5;\r\n\r\n\r\n    public Hero(int atkPerc, int speedPerc, int defPerc, String name) {\r\n        this.atkPerc = atkPerc;\r\n        this.speedPerc = speedPerc;\r\n        this.defPerc = defPerc;\r\n        this.name = name;\r\n\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"name='\" + name + '\\'' + \" \"+\r\n                \"atk%=\" + atkPerc +\r\n                \", speed%=\" + speedPerc +\r\n                \", def%=\" + defPerc +\r\n                \", HP=\" + HP +\r\n\r\n                \", gear slots=\" + gearSlots;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/model/Hero.java b/src/model/Hero.java
+--- a/src/model/Hero.java	(revision f01d2f362f75258ebddb6f6a13b7e2ebf5d64f60)
++++ b/src/model/Hero.java	(date 1758127971286)
+@@ -19,6 +19,26 @@
+ 
+     }
+ 
++    public int getAtkPerc() {
++        return atkPerc;
++    }
++
++    public int getSpeedPerc() {
++        return speedPerc;
++    }
++
++    public int getDefPerc() {
++        return defPerc;
++    }
++
++    public int getHP() {
++        return HP;
++    }
++
++    public int getGearSlots() {
++        return gearSlots;
++    }
++
+     public String getName() {
+         return name;
+     }
+Index: src/Core/BattleCalc.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Core;\r\n\r\nimport model.Enemy;\r\nimport model.User;\r\n\r\npublic class BattleCalc {\r\n    public static boolean fight(User user, Enemy enemy){\r\n\r\n        return true;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/BattleCalc.java b/src/Core/BattleCalc.java
+--- a/src/Core/BattleCalc.java	(revision 7062edf35da44952d180720e720bd6ed598248ff)
++++ b/src/Core/BattleCalc.java	(date 1758128729449)
+@@ -4,8 +4,62 @@
+ import model.User;
+ 
+ public class BattleCalc {
+-    public static boolean fight(User user, Enemy enemy){
+ 
+-        return true;
++
++    public static boolean fight(User user, Enemy enemy) throws InterruptedException {
++        System.out.println("CURRENTLY ATTACKING " + enemy.getName());
++        int enemyDEF = enemy.getDEF();
++        int enemySPE = enemy.getSPE();
++        int enemyATK = enemy.getATK();
++        int userSPE = user.getHero().getHP();
++        int userATK = user.getHero().getAtkPerc();
++        int userDEF = user.getHero().getDefPerc();
++        do {
++            if (userSPE > enemySPE) {
++                Thread.sleep(1000);
++                System.out.println("YOU ARE FASTER");
++                Thread.sleep(1000);
++                System.out.println("ATTACKING " + enemy.getName());
++                Thread.sleep(1000);
++                enemyDEF -= userATK;
++                if (enemyDEF < 1){
++                    Thread.sleep(1000);
++                    System.out.println("YOU DEFEATED " + enemy.getName());
++                    return true;
++                }
++                Thread.sleep(1000);
++                System.out.println("ATTACKED BY " + enemy.getName());
++                userDEF -= enemyATK;
++                if (userDEF < 1){
++                    Thread.sleep(1000);
++                    System.out.println("YOU DIED");
++                    return false;
++                }
++
++
++
++            } else{
++                Thread.sleep(1000);
++                System.out.println("YOU ARE SLOWER");
++                Thread.sleep(1000);
++                System.out.println("ATTACKED BY " + enemy.getName());
++                userDEF -= enemyATK;
++                if (userDEF < 1){
++                    Thread.sleep(1000);
++                    System.out.println("YOU DIED");
++                    return false;
++                }
++                Thread.sleep(1000);
++                System.out.println("ATTACKING " + enemy.getName());
++                enemyDEF -= userATK;
++                if (enemyDEF < 1){
++                    Thread.sleep(1000);
++                    System.out.println("YOU DEFEATED " + enemy.getName());
++                    return true;
++                }
++
++
++            }
++        }while(5 == 5);
+     }
+ }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"c3174781-f2a3-47de-96df-4813b41211de\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/.gitignore\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/modules.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/uiDesigner.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/EnemyList\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/GearList\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/HeroList\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/NicheFruit.iml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/Core/BattleCalc.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/Core/Dungeon.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/Main.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/model/Enemy.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/model/Gear.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/model/Hero.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/model/User.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/ui/InputHandler.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\n  \"associatedIndex\": 1\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"32mcIgbWFVlYUH8Vhfya08UIzzE\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\n    \"git-widget-placeholder\": \"master\",\n    \"settings.editor.selected.configurable\": \"preferences.pluginManager\"\n  }\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\Samuel Simandl\\Desktop\\plocha\\java\\NicheFruit\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"c3174781-f2a3-47de-96df-4813b41211de\" name=\"Changes\" comment=\"\" />\r\n      <created>1758029110585</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1758029110585</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <breakpoint enabled=\"true\" type=\"java-exception\">\r\n          <properties class=\"java.lang.NumberFormatException\" package=\"java.lang\" />\r\n          <option name=\"timeStamp\" value=\"11\" />\r\n        </breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision f01d2f362f75258ebddb6f6a13b7e2ebf5d64f60)
++++ b/.idea/workspace.xml	(date 1758128591158)
+@@ -4,25 +4,16 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="c3174781-f2a3-47de-96df-4813b41211de" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/EnemyList" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/GearList" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/HeroList" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/NicheFruit.iml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/Core/BattleCalc.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/Core/Dungeon.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/model/Enemy.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/model/Gear.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/model/Hero.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/model/User.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/ui/InputHandler.java" afterDir="false" />
++    <list default="true" id="c3174781-f2a3-47de-96df-4813b41211de" name="Changes" comment="struktura, chybi flow hry">
++      <change afterPath="$PROJECT_DIR$/src/utils/RandomGen.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/EnemyList" beforeDir="false" afterPath="$PROJECT_DIR$/EnemyList" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Core/BattleCalc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/BattleCalc.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Core/Dungeon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Dungeon.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/model/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Enemy.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/model/Hero.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Hero.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/User.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -39,24 +30,30 @@
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 1
+-}]]></component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 1
++}</component>
+   <component name="ProjectId" id="32mcIgbWFVlYUH8Vhfya08UIzzE" />
+   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "git-widget-placeholder": "master",
+-    "settings.editor.selected.configurable": "preferences.pluginManager"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
++  },
++  &quot;keyToStringList&quot;: {
++    &quot;ChangesTree.GroupingKeys&quot;: [
++      &quot;directory&quot;,
++      &quot;module&quot;
++    ]
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="MoveFile.RECENT_KEYS">
+       <recent name="C:\Users\Samuel Simandl\Desktop\plocha\java\NicheFruit" />
+@@ -71,7 +68,31 @@
+       <option name="presentableId" value="Default" />
+       <updated>1758029110585</updated>
+     </task>
++    <task id="LOCAL-00001" summary="struktura, chybi flow hry">
++      <option name="closed" value="true" />
++      <created>1758040662274</created>
++      <option name="number" value="00001" />
++      <option name="presentableId" value="LOCAL-00001" />
++      <option name="project" value="LOCAL" />
++      <updated>1758040662274</updated>
++    </task>
++    <option name="localTasksCounter" value="2" />
+     <servers />
++  </component>
++  <component name="Vcs.Log.Tabs.Properties">
++    <option name="TAB_STATES">
++      <map>
++        <entry key="MAIN">
++          <value>
++            <State />
++          </value>
++        </entry>
++      </map>
++    </option>
++  </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="struktura, chybi flow hry" />
++    <option name="LAST_COMMIT_MESSAGE" value="struktura, chybi flow hry" />
+   </component>
+   <component name="XDebuggerManager">
+     <breakpoint-manager>
+Index: src/Core/Dungeon.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Core;\r\n\r\nimport model.Gear;\r\nimport model.Hero;\r\nimport model.User;\r\n\r\nimport java.io.IOException;\r\nimport java.nio.file.Files;\r\nimport java.nio.file.Paths;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class Dungeon {\r\n    User user;\r\n    public Dungeon(User user){\r\n        this.user = user;\r\n    }\r\n    public void start() throws IOException {\r\n        ArrayList<Gear> gear = new ArrayList<>();\r\n        ArrayList<Hero> heroes = new ArrayList<>();\r\n        List<String> lines = Files.readAllLines(Paths.get(\"GearList\"));\r\n        String[] params;\r\n        for(String line : lines){\r\n            params = line.split(\";\");\r\n            gear.add(\r\n                    new Gear(\r\n                            Integer.parseInt(params[0]),\r\n                            (params[1]),\r\n                            (params[2]),\r\n                            Integer.parseInt(params[3])\r\n                    ));\r\n        }\r\n\r\n\r\n        //BattleCalc.fight()\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/Dungeon.java b/src/Core/Dungeon.java
+--- a/src/Core/Dungeon.java	(revision f01d2f362f75258ebddb6f6a13b7e2ebf5d64f60)
++++ b/src/Core/Dungeon.java	(date 1758128591116)
+@@ -1,8 +1,10 @@
+ package Core;
+ 
++import model.Enemy;
+ import model.Gear;
+ import model.Hero;
+ import model.User;
++import utils.RandomGen;
+ 
+ import java.io.IOException;
+ import java.nio.file.Files;
+@@ -15,9 +17,8 @@
+     public Dungeon(User user){
+         this.user = user;
+     }
+-    public void start() throws IOException {
++    public void start() throws IOException, InterruptedException {
+         ArrayList<Gear> gear = new ArrayList<>();
+-        ArrayList<Hero> heroes = new ArrayList<>();
+         List<String> lines = Files.readAllLines(Paths.get("GearList"));
+         String[] params;
+         for(String line : lines){
+@@ -30,8 +31,24 @@
+                             Integer.parseInt(params[3])
+                     ));
+         }
++        ArrayList<Enemy> enemies = new ArrayList<>();
++        List<String> eLines = Files.readAllLines(Paths.get("EnemyList"));
++        String[] eParams;
++        for(String line : eLines){
++            eParams = line.split(";");
++            enemies.add(
++                    new Enemy(
++                            eParams[0],
++                            Integer.parseInt(eParams[1]),
++                            Integer.parseInt(eParams[2]),
++                            Integer.parseInt(eParams[3])
++                    ));
++        }
+ 
+ 
++        do{
++            Thread.sleep(2000);
++        }while (BattleCalc.fight(user, enemies.get(RandomGen.getRandomInt(0, enemies.size()-1))));
+         //BattleCalc.fight()
+     }
+ }
+Index: src/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import Core.Dungeon;\r\nimport model.Hero;\r\nimport model.User;\r\nimport ui.InputHandler;\r\n\r\nimport java.io.IOException;\r\nimport java.nio.file.Files;\r\nimport java.nio.file.Paths;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class Main {\r\n\r\n    static void initialize() throws IOException {\r\n        String prompt = \"napis cislo postavy kterou si chces vybrat\";\r\n        ArrayList<Hero> heroes = new ArrayList<>();\r\n        List<String> lines = Files.readAllLines(Paths.get(\"HeroList\"));\r\n        String[] params;\r\n        for(String line : lines){\r\n            params = line.split(\";\");\r\n            heroes.add(\r\n                    new Hero(\r\n                            Integer.parseInt(params[0]),\r\n                            Integer.parseInt(params[1]),\r\n                            Integer.parseInt(params[2]),\r\n                            params[3]\r\n            ));\r\n        }\r\n\r\n\r\n        User user = new User(InputHandler.readText(\"napis jmeno\"), heroes.get(InputHandler.chooseHero(prompt, heroes)));\r\n        System.out.println(user);\r\n        Dungeon dungeon = new Dungeon(user);\r\n        dungeon.start();\r\n\r\n\r\n    }\r\n    public static void main(String[] args) throws IOException {\r\n        initialize();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Main.java b/src/Main.java
+--- a/src/Main.java	(revision 7062edf35da44952d180720e720bd6ed598248ff)
++++ b/src/Main.java	(date 1758128549914)
+@@ -11,7 +11,7 @@
+ 
+ public class Main {
+ 
+-    static void initialize() throws IOException {
++    static void initialize() throws IOException, InterruptedException {
+         String prompt = "napis cislo postavy kterou si chces vybrat";
+         ArrayList<Hero> heroes = new ArrayList<>();
+         List<String> lines = Files.readAllLines(Paths.get("HeroList"));
+@@ -35,7 +35,7 @@
+ 
+ 
+     }
+-    public static void main(String[] args) throws IOException {
++    public static void main(String[] args) throws IOException, InterruptedException {
+         initialize();
+     }
+ }
+\ No newline at end of file
+Index: src/model/Enemy.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\n\r\npublic class Enemy {\r\n    private String name;\r\n    private final int ATK;\r\n    private final int DEF;\r\n    private final int SPE;\r\n\r\n    public Enemy(String name, int ATK, int DEF, int SPE) {\r\n        this.name = name;\r\n        this.ATK = ATK;\r\n        this.DEF = DEF;\r\n        this.SPE = SPE;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/model/Enemy.java b/src/model/Enemy.java
+--- a/src/model/Enemy.java	(revision f01d2f362f75258ebddb6f6a13b7e2ebf5d64f60)
++++ b/src/model/Enemy.java	(date 1758127971292)
+@@ -6,6 +6,22 @@
+     private final int DEF;
+     private final int SPE;
+ 
++    public String getName() {
++        return name;
++    }
++
++    public int getATK() {
++        return ATK;
++    }
++
++    public int getDEF() {
++        return DEF;
++    }
++
++    public int getSPE() {
++        return SPE;
++    }
++
+     public Enemy(String name, int ATK, int DEF, int SPE) {
+         this.name = name;
+         this.ATK = ATK;
+Index: EnemyList
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/EnemyList b/EnemyList
+--- a/EnemyList	(revision f01d2f362f75258ebddb6f6a13b7e2ebf5d64f60)
++++ b/EnemyList	(date 1758128357458)
+@@ -1,0 +1,18 @@
++Wolf;15;15;15
++Crab;15;15;15
++Cancer;15;15;15
++Crustacean;15;15;15
++Worm;15;15;15
++Jellyfish;15;15;15
++Axolotl;15;15;15
++Shrimp;15;15;15
++Dog;15;15;15
++Shark;15;15;15
++Whale;15;15;15
++Bird;15;15;15
++Octopus;15;15;15
++Dolphin;15;15;15
++Orca;15;15;15
++JAKUBETERNAL;1;1;1
++KnihyDobrovsky;15;16;15
++Oliver;15;15;15
+\ No newline at end of file
