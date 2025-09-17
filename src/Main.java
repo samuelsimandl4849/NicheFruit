@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Main {
 
-    static void initialize() throws IOException {
+    static void initialize() throws IOException, InterruptedException {
         String prompt = "napis cislo postavy kterou si chces vybrat";
         ArrayList<Hero> heroes = new ArrayList<>();
         List<String> lines = Files.readAllLines(Paths.get("HeroList"));
@@ -35,7 +35,7 @@ public class Main {
 
 
     }
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         initialize();
     }
 }

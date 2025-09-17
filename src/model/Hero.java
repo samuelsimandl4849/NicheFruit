@@ -19,6 +19,26 @@ public class Hero {
 
     }
 
+    public int getAtkPerc() {
+        return atkPerc;
+    }
+
+    public int getSpeedPerc() {
+        return speedPerc;
+    }
+
+    public int getDefPerc() {
+        return defPerc;
+    }
+
+    public int getHP() {
+        return HP;
+    }
+
+    public int getGearSlots() {
+        return gearSlots;
+    }
+
     public String getName() {
         return name;
     }
